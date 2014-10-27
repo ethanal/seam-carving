@@ -72,14 +72,13 @@ public class SeamCarving {
 		
 		for (int y = 1; y < height; ++y) {
 			for (int x = 0; x < width; ++x) {
-				dp[x][y] = G[x][y];
-				
 				if (x == 0)
-					dp[x][y] += Math.min(dp[x][y-1], dp[x+1][y-1]);
+					dp[x][y] = G[x][y] + Math.min(dp[x][y-1], dp[x+1][y-1]);
 				else if (x == width - 1)
-					dp[x][y] += Math.min(dp[x-1][y-1], dp[x][y-1]);
+					dp[x][y] = G[x][y] + Math.min(dp[x-1][y-1], dp[x][y-1]);
 				else
-					dp[x][y] += Math.min(Math.min(dp[x-1][y-1], dp[x][y-1]), dp[x+1][y-1]);
+					dp[x][y] = G[x][y] + Math.min(Math.min(dp[x-1][y-1], dp[x][y-1]),
+							                      dp[x+1][y-1]);
 			}
 		}
 		
@@ -97,14 +96,13 @@ public class SeamCarving {
 		
 		for (int x = 1; x < width; ++x) {
 			for (int y = 0; y < height; ++y) {
-				dp[x][y] = G[x][y];
-				
 				if (y == 0)
-					dp[x][y] += Math.min(dp[x-1][y], dp[x-1][y+1]);
+					dp[x][y] = G[x][y] + Math.min(dp[x-1][y], dp[x-1][y+1]);
 				else if (y == height - 1)
-					dp[x][y] += Math.min(dp[x-1][y-1], dp[x-1][y]);
+					dp[x][y] = G[x][y] + Math.min(dp[x-1][y-1], dp[x-1][y]);
 				else
-					dp[x][y] += Math.min(Math.min(dp[x-1][y-1], dp[x-1][y]), dp[x-1][y+1]);
+					dp[x][y] = G[x][y] + Math.min(Math.min(dp[x-1][y-1], dp[x-1][y]),
+							                      dp[x-1][y+1]);
 			}
 		}
 		
@@ -228,6 +226,7 @@ public class SeamCarving {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				if (e.getButton() == MouseEvent.BUTTON3) {
+					// Alternate between gradient and original image
 					if (rightClickMode) {
 						currentImage = copyImage(originalImage);
 						int[][] G = totalGradient(originalImage);
